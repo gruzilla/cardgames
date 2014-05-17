@@ -1,0 +1,24 @@
+/* =============================================================================
+   Paths
+   ========================================================================== */
+/*
+ * takes colors from colors.scss
+ */
+path.curve,
+path.chord,
+path.line {
+  fill: none;
+  stroke-width: 1px;
+}
+
+path.chord,
+path.curve {
+  stroke: red;
+  stroke-width: 3px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 0.5px;
+}

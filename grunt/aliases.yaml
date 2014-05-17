@@ -1,0 +1,46 @@
+test:
+    - 'wiretestdependencies'
+    - 'jshint'
+    - 'mocha'
+
+server:
+    - 'clean:server'
+    - 'wiredependencies'
+    - 'connect'
+    - 'watch'
+
+handleFont:
+    - 'newer:webfont:build'
+
+handleCss:
+    - 'newer:compass:build'
+
+wiredependencies:
+    - 'newer:favicons'
+    - 'fileblocks:default'
+    - 'bowerInstall'
+
+wiretestdependencies:
+    - 'fileblocks:test'
+    - 'bowerInstall:test'
+
+handleImages:
+    - 'newer:imagemin'
+
+build:
+    - 'clean'
+    - 'wiredependencies'
+    - 'newer:copy:html'
+    - 'newer:copy:images'
+    - 'concurrent:build'
+    - 'newer:copy:fonts'
+    - 'useminPrepare'
+    - 'newer:concat:generated'
+    - 'newer:cssmin:generated'
+    - 'newer:uglify:generated'
+    - 'newer:usemin'
+
+default:
+    - 'clean'
+    - 'wiredependencies'
+    - 'handleFont'

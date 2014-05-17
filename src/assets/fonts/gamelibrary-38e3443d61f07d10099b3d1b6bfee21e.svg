@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>
+Created by FontForge 20120731 at Sat May 17 16:09:13 2014
+ By Matthias Steinböck,,,
+Created by Matthias Steinbo:ck,,, with FontForge 2.0 (http://fontforge.sf.net)
+</metadata>
+<defs>
+<font id="gamelibrary" horiz-adv-x="187" >
+  <font-face 
+    font-family="gamelibrary"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="512"
+    panose-1="2 0 6 3 0 0 0 0 0 0"
+    ascent="448"
+    descent="-64"
+    bbox="0 -64 512 448"
+    underline-thickness="25"
+    underline-position="-52"
+    unicode-range="U+E001-E002"
+  />
+<missing-glyph 
+d="M17 0v341h136v-341h-136zM34 17h102v307h-102v-307z" />
+    <glyph glyph-name=".notdef" 
+d="M17 0v341h136v-341h-136zM34 17h102v307h-102v-307z" />
+    <glyph glyph-name=".null" horiz-adv-x="0" 
+ />
+    <glyph glyph-name="nonmarkingreturn" horiz-adv-x="170" 
+ />
+    <glyph glyph-name="uniE001" unicode="&#xe001;" horiz-adv-x="432" 
+d="M216 315q26 0 57.5 -12.5t58.5 -30.5t50 -36.5t36 -31.5l14 -12q-14 -14 -37 -34.5t-80.5 -55t-98.5 -34.5q-34 0 -68.5 12.5t-60 31t-46 36.5t-31.5 30l-10 13q4 5 11 13.5t30 30t47 37.5t59 29.5t69 13.5zM216 115q32 0 54.5 22.5t22.5 54.5q0 31 -22.5 53.5
+t-54.5 22.5t-54.5 -22.5t-22.5 -53.5q0 -32 22.5 -54.5t54.5 -22.5zM216 236q19 0 32 -12.5t13 -31.5t-13 -32t-32 -13t-32 12.5t-13 31.5t13 32t32 13z" />
+    <glyph glyph-name="uniE002" unicode="&#xe002;" horiz-adv-x="512" 
+d="M94 302q-30 -49 -30 -104q0 -82 58 -140t140 -58q55 0 104 30q-107 10 -184.5 87.5t-87.5 184.5zM190 448q-33 -58 -33 -118q0 -98 69.5 -167.5t167.5 -69.5q60 0 118 33q-24 -83 -93 -136.5t-157 -53.5q-109 0 -185.5 76.5t-76.5 185.5q0 88 53.5 157t136.5 93z" />
+  </font>
+</defs></svg>

@@ -1,0 +1,35 @@
+/* =============================================================================
+   Links
+   ========================================================================== */
+/*
+ * Addresses outline displayed oddly in Chrome
+ */
+a:focus {
+  outline: thin dotted;
+}
+
+/*
+ * Improves readability when focused and also mouse hovered in all browsers
+ * people.opera.com/patrickl/experiments/keyboard/test
+ */
+a:hover,
+a:active {
+  outline: 0;
+}
+
+
+a {
+  color: $link-font-color;
+  font-weight: $regular;
+  text-decoration: none;
+}
+a:hover {
+  color: $link-font-color-hover;
+}
+
+a small {
+  font-size: 11px;
+  color: $link-font-color-small;
+  margin-top: -0.6em;
+  display: block;
+}

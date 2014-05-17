@@ -1,0 +1,21 @@
+{
+  "name": "heins.io",
+  "version": "0.0.1",
+  "main": "src/index.html",
+  "ignore": [
+    ".jshintrc",
+    "dist/**",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "jQuery": "~1.*",
+    "d3": "2.*"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "chai-as-promised": "~4.1.1",
+    "chai": "~1.9.1"
+  },
+  "overrides": {
+  }
+}
