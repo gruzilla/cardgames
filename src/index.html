@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Gamelibrary</title>
     <!--[if lt IE 9]>
-        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!-- build:css css/main.css -->
     <!-- fileblock:css customStyles -->
@@ -16,39 +17,75 @@
     <!-- endfileblock -->
     <!-- endbuild -->
 
-	<meta name="msapplication-square70x70logo" content="assets/images/favicons/windows-tile-70x70.png">
-	<meta name="msapplication-square150x150logo" content="assets/images/favicons/windows-tile-150x150.png">
-	<meta name="msapplication-square310x310logo" content="assets/images/favicons/windows-tile-310x310.png">
-	<meta name="msapplication-TileImage" content="assets/images/favicons/windows-tile-144x144.png">
-	<meta name="msapplication-TileColor" content="#666666">
-	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/images/favicons/apple-touch-icon-152x152-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/images/favicons/apple-touch-icon-120x120-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/images/favicons/apple-touch-icon-76x76-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="assets/images/favicons/apple-touch-icon-60x60-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/favicons/apple-touch-icon-144x144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/favicons/apple-touch-icon-114x114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/favicons/apple-touch-icon-72x72-precomposed.png">
-	<link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-touch-icon.png">
-	<link rel="icon" sizes="228x228" href="assets/images/favicons/coast-icon-228x228.png">
-	<link rel="shortcut icon" href="assets/images/favicons/favicon.ico">
-	<link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicons/favicon.png">
+    <meta name="msapplication-square70x70logo"
+          content="assets/images/favicons/windows-tile-70x70.png">
+    <meta name="msapplication-square150x150logo"
+          content="assets/images/favicons/windows-tile-150x150.png">
+    <meta name="msapplication-square310x310logo"
+          content="assets/images/favicons/windows-tile-310x310.png">
+    <meta name="msapplication-TileImage"
+          content="assets/images/favicons/windows-tile-144x144.png">
+    <meta name="msapplication-TileColor" content="#666666">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152"
+          href="assets/images/favicons/apple-touch-icon-152x152-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120"
+          href="assets/images/favicons/apple-touch-icon-120x120-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="76x76"
+          href="assets/images/favicons/apple-touch-icon-76x76-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="60x60"
+          href="assets/images/favicons/apple-touch-icon-60x60-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="assets/images/favicons/apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="assets/images/favicons/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="assets/images/favicons/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" sizes="57x57"
+          href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" sizes="228x228"
+          href="assets/images/favicons/coast-icon-228x228.png">
+    <link rel="shortcut icon" href="assets/images/favicons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64"
+          href="assets/images/favicons/favicon.png">
+
 </head>
 
 <body>
-    <h1>Welcome to the gamelibrary v3</h1>
-    <div id="container"></div>
 
+<h1>uno</h1>
 
-    <!-- build:js js/gamelibrary.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jQuery/dist/jquery.js"></script>
-    <script src="bower_components/d3/d3.v2.js"></script>
-    <!-- endbower -->
+<div id="container">
+</div>
 
-    <!-- fileblock:js customScripts -->
-    <script src="javascript/app.js"></script>
-    <!-- endfileblock -->
-    <!-- endbuild -->
+<button id="save">save</button>
+
+<!--
+<script src="http://128.131.223.205:8080/target/target-script-min.js#ipad"></script>
+-->
+
+<!-- build:js js/gamelibrary.js -->
+<!-- bower:js -->
+<script src="bower_components/jQuery/dist/jquery.js"></script>
+<script src="bower_components/d3/d3.v2.js"></script>
+<script src="bower_components/jquery.transit/jquery.transit.js"></script>
+<script src="bower_components/hammerjs/hammer.js"></script>
+<script src="bower_components/jquery-hammerjs/jquery.hammer.js"></script>
+<!-- endbower -->
+
+<!--
+<script src="bower_components/hammerjs/plugins/hammer.fakemultitouch.js"></script>
+<script src="bower_components/hammerjs/plugins/hammer.showtouches.js"></script>
+<script>
+    Hammer.plugins.fakeMultitouch();
+    Hammer.plugins.showTouches();
+</script>
+-->
+
+<!-- fileblock:js customScripts -->
+<script src="javascript/modules/shuffle.js"></script>
+<script src="javascript/app.js"></script>
+<!-- endfileblock -->
+<!-- endbuild -->
 
 </body>
 </html>

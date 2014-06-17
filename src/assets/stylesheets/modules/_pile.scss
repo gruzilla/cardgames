@@ -1,0 +1,72 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/user-interface";
+
+$cardWidth: 70%;
+$cardHeight: 70%;
+$deckWidth: 80px;
+$deckHeight: 120px;
+$deckBorder: 20px;
+
+/* card size is defined by .card-container */
+.card {
+  width: 100%;
+  height: 100%;
+
+  iframe {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.pile {
+  position: absolute;
+  cursor: move;
+  width: $deckWidth + $deckBorder * 2;
+  height: $deckHeight + $deckBorder * 2;
+
+  background-color: #EFEFEF;
+  @include border-radius(15%);
+  border-width: 3px;
+  border-style: solid;
+  border-color: darken(#EFEFEF, 10%);
+
+  & > .name-container {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    color: $pile-base-color;
+    @include user-select('none');
+  }
+
+  & > .card-container {
+    cursor: pointer;
+    width: 70%;
+    height: 70%;
+    position: absolute;
+    top: 15%;
+    left: 15%;
+
+    & > .card {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  .card {
+    display: none;
+  }
+
+  .card:nth-last-child(2),
+  .card:last-child {
+    display: block;
+  }
+
+  &.unfolded {
+    .card {
+      display: block;
+    }
+  }
+}
