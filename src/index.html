@@ -10,6 +10,7 @@
     <![endif]-->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!-- build:css css/main.css -->
     <!-- fileblock:css customStyles -->
@@ -52,7 +53,7 @@
 
 <body>
 
-<h1>uno</h1>
+<h1 class="game-name"></h1>
 
 <div id="container">
 </div>
@@ -70,6 +71,7 @@
 <script src="bower_components/jquery.transit/jquery.transit.js"></script>
 <script src="bower_components/hammerjs/hammer.js"></script>
 <script src="bower_components/jquery-hammerjs/jquery.hammer.js"></script>
+<script src="bower_components/jquery-color/jquery.color.js"></script>
 <!-- endbower -->
 
 <!--
@@ -83,6 +85,7 @@
 
 <!-- fileblock:js customScripts -->
 <script src="javascript/modules/shuffle.js"></script>
+<script src="javascript/games/uno.js"></script>
 <script src="javascript/app.js"></script>
 <!-- endfileblock -->
 <!-- endbuild -->

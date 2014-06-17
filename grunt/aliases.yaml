@@ -32,6 +32,7 @@ build:
     - 'wiredependencies'
     - 'newer:copy:html'
     - 'newer:copy:images'
+    - 'newer:copy:decks'
     - 'concurrent:build'
     - 'newer:copy:fonts'
     - 'useminPrepare'

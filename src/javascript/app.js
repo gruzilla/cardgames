@@ -1,63 +1,7 @@
+/* global Uno */
 var UNFOLD_ANGLE = 90; // degree
 var UNFOLD_DISTANCE = 40; // pixel
 var DEFAULT_UNFOLD_ANIMATION = 'extrude';
-var PILES = [
-    {
-        id: 'deck',
-        name: 'Stapel',
-        unfoldAble: false,
-        cards: [
-            'yellow0', 'yellow1', 'yellow2', 'yellow3', 'yellow4', 'yellow6', 'yellow7', 'yellow8', 'yellow9', 'yellowStop', 'yellowReverse', 'yellowPlus2',
-            'red0', 'red1', 'red2', 'red3', 'red4', 'red6', 'red7', 'red8', 'red9', 'redStop', 'redReverse', 'redPlus2',
-            'green0', 'green1', 'green2', 'green3', 'green4', 'green6', 'green7', 'green8', 'green9', 'greenStop', 'greenReverse', 'greenPlus2',
-            'blue0', 'blue1', 'blue2', 'blue3', 'blue4', 'blue6', 'blue7', 'blue8', 'blue9', 'blueStop', 'blueReverse', 'bluePlus2',
-            'wild', 'wild4'
-        ].shuffle(),
-        top: '40%',
-        left: '31%'
-    },
-    {
-        id: 'center',
-        name: 'Spielfeld',
-        cards: [],
-        top: '40%',
-        left: '48%'
-    },
-    {
-        id: 'player1',
-        name: 'Spieler 1',
-        unfoldAnimation: 'rotate',
-        cards: [],
-        top: '8%',
-        left: '40%',
-        rotate: '180deg'
-    },
-    {
-        id: 'player2',
-        name: 'Spieler 2',
-        unfoldAnimation: 'rotate',
-        cards: [],
-        top: '75%',
-        left: '40%'
-    }
-];
-var MOVES = [
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-    ['deck', 'player1'],
-
-    ['deck', 'player2'],
-    ['deck', 'player2'],
-    ['deck', 'player2'],
-    ['deck', 'player2'],
-    ['deck', 'player2'],
-    ['deck', 'player2'],
-    ['deck', 'player2']
-];
 
 var HAMMER_OPTIONS = {
     preventDefault: true,
@@ -70,8 +14,14 @@ var HAMMER_OPTIONS = {
 var ANIMATION_DURATION = 300; // milli seconds
 var CARD_DRAG_ZINDEX = 2000; // zIndex
 
-(function ($) {
+(function ($, game) {
     'use strict';
+
+    var PILES = game.piles;
+    var MOVES = game.moves;
+    var moveAllowed = game.moveAllowed;
+
+    $('.game-name').text(game.name);
 
     var render = function () {
         var pilesSelection = d3.select('#container')
@@ -101,6 +51,10 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
             .each(function(datum) {
                 if (datum.rotate) {
                     $(this).css('rotate', datum.rotate);
+                }
+
+                if (datum.sort) {
+                    datum.cards = datum.cards.sort();
                 }
             });
 
@@ -267,24 +221,6 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
             $pile.removeClass('unfolded');
         }, ANIMATION_DURATION);
     };
-
-    /*
-    var showCard = function ($delegate, $element) {
-        $delegate.find('.card').each(function(index, item) {
-            var zIndex = $(item).data('oZIndex');
-            $(item).css({
-                zIndex: zIndex ? zIndex : ''
-            });
-        });
-        if (!$element || !$element.hasClass('card')) {
-            return;
-        }
-        $element.css({
-            zIndex: CARD_SHOW_ZINDEX
-        });
-    };
-    */
-
 
     var getPile = function(id) {
         for (var i = 0; i < PILES.length; i++) {
@@ -453,31 +389,44 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
 
             var sourcePile = findTargetByClassName($currentDragElement[0], 'pile');
 
-            if (!dropPile ||
-                !dropPile.parentNode ||
-                sourcePile === dropPile ||
-                dropPile.className.search('pile') < 0
-                ) {
-                css = {
-                    zIndex: $currentDragElement.data('oZIndex'),
-                    display: 'block',
-                    top: 0,
-                    left: 0
-                };
-            } else {
+            css = {
+                zIndex: $currentDragElement.data('oZIndex'),
+                display: 'block',
+                top: 0,
+                left: 0
+            };
 
+            if (dropPile &&
+                dropPile.parentNode &&
+                sourcePile !== dropPile &&
+                dropPile.className.search('pile') >= 0
+            ) {
                 var index = $currentDragElement.index();
                 var name = $currentDragElement.attr('id').substr('card-'.length);
                 var sd = $(sourcePile).attr('id');
                 var td = $(dropPile).attr('id');
 
-                currentDragTarget = null;
-                $currentDragElement = null;
-                move(sd, td, name, index);
+                if (moveAllowed(sd, td, name, index)) {
+                    currentDragTarget = null;
+                    $currentDragElement = null;
+                    move(sd, td, name, index);
 
-                render();
+                    render();
 
-                return;
+                    // do not manipulate current element, stop execution
+                    return;
+                } else {
+                    var $dP = $(dropPile);
+                    var origColor = $dP.css('border-color');
+                    var origBgColor = $dP.css('background-color');
+                    $dP.css({
+                        borderColor: '#FF0000',
+                        backgroundColor: '#FFCCCC'
+                    }).animate({
+                        borderColor: origColor,
+                        backgroundColor: origBgColor
+                    });
+                }
             }
             break;
         }
@@ -532,4 +481,4 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
     */
     ;
 
-})(jQuery);
+})(jQuery, new Uno());
