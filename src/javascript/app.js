@@ -1,25 +1,49 @@
 /* global Uno */
-var UNFOLD_ANGLE = 90; // degree
-var UNFOLD_DISTANCE = 40; // pixel
-var DEFAULT_UNFOLD_ANIMATION = 'extrude';
-
-var HAMMER_OPTIONS = {
-    preventDefault: true,
-    scaleThreshold: 0,
-    dragMinDistance: 0,
-    showTouches: true,
-    holdTimeout: 150
-};
-
-var ANIMATION_DURATION = 300; // milli seconds
-var CARD_DRAG_ZINDEX = 2000; // zIndex
-
 (function ($, game) {
     'use strict';
 
+    var UNFOLD_ANGLE = 90; // degree
+    var UNFOLD_DISTANCE = 40; // pixel
+    var DEFAULT_UNFOLD_ANIMATION = 'extrude';
+
+    var HAMMER_OPTIONS = {
+        preventDefault: true,
+        scaleThreshold: 0,
+        dragMinDistance: 0,
+        showTouches: true,
+        holdTimeout: 150
+    };
+
+    var ANIMATION_DURATION = 300; // milli seconds
+    var CARD_DRAG_ZINDEX = 2000; // zIndex
     var PILES = game.piles;
     var MOVES = game.moves;
-    var moveAllowed = game.moveAllowed;
+
+    var moveAllowed = function() {
+        return true;
+    };
+
+    if (game.moveAllowed) {
+        moveAllowed = game.moveAllowed;
+    } else {
+        moveAllowed = function(from, to, cardName) { // , cardIndex
+            // disallow move on same pile
+            if (from === to) {
+                return false;
+            }
+
+            var fromPile = getPile(from);
+            var toPile = getPile(to);
+
+            // if source pile does not contain the card, the move is disallowed
+            if (fromPile.cards.indexOf(cardName) < 0) {
+                return false;
+            }
+
+            // now check the rules on the target pile
+            return toPile.incoming && toPile.incoming(from, cardName);
+        };
+    }
 
     $('.game-name').text(game.name);
 
@@ -131,8 +155,6 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
 
     var unfold = function ($pile, animationDuration, method) {
 
-        $pile.addClass('unfolded');
-
         if (undefined === animationDuration) {
             animationDuration = ANIMATION_DURATION;
         }
@@ -141,6 +163,13 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
         }
 
         var pile = getPile($pile.attr('id'));
+
+        if (false === pile.unfoldAble) {
+            return;
+        }
+
+        $pile.addClass('unfolded');
+
         if (pile && pile.unfoldAnimation) {
             method = pile.unfoldAnimation;
         }
@@ -275,7 +304,7 @@ var CARD_DRAG_ZINDEX = 2000; // zIndex
     };
 
     var findTargetByClassName = function(eventOrNode, className) {
-        var el = eventOrNode instanceof Node ? eventOrNode : eventOrNode.target ? eventOrNode.target : null;
+        var el = eventOrNode instanceof Node ? eventOrNode : eventOrNode && eventOrNode.target ? eventOrNode.target : null;
         if (!el) {
             return null;
         }

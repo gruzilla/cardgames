@@ -33,12 +33,19 @@ function Uno() {
 
                 var lastCard = this.cards[this.cards.length-1];
 
-                var pattern = /(red|yellow|blue|green|wild)(.+)/;
+                var pattern = /(red|yellow|blue|green|wild)(.*)/;
                 var match = pattern.exec(lastCard);
+                if (!match || 3 !== match.length) {
+                    return false;
+                }
                 var colorExisting = match[1];
                 var detailExisting = match[2];
 
+
                 match = pattern.exec(cardName);
+                if (!match || 3 !== match.length) {
+                    return false;
+                }
                 var colorIncoming = match[1];
                 var detailIncoming = match[2];
 
@@ -93,40 +100,10 @@ function Uno() {
         ['deck', 'player2']
     ];
 
-    var getPile = function(id) {
-        for (var i = 0; i < piles.length; i++) {
-            if (piles[i].id === id) {
-                return piles[i];
-            }
-        }
-        return null;
-    };
-
-
-    var moveAllowed = function(from, to, cardName) { // , cardIndex
-        // disallow move on same pile
-        if (from === to) {
-            return false;
-        }
-
-        var fromPile = getPile(from);
-        var toPile = getPile(to);
-
-        // if source pile does not contain the card, the move is disallowed
-        if (fromPile.cards.indexOf(cardName) < 0) {
-            return false;
-        }
-
-        // now check the rules on the target pile
-        return toPile.incoming && toPile.incoming(from, cardName);
-    };
-
-
     return {
         name: 'uno',
         piles: piles,
-        moves: moves,
-        moveAllowed: moveAllowed
+        moves: moves
     };
 }
 
