@@ -1,4 +1,5 @@
 /* global Uno */
+/* global cgEngine */
 (function ($, game) {
     'use strict';
 
@@ -16,41 +17,31 @@
 
     var ANIMATION_DURATION = 300; // milli seconds
     var CARD_DRAG_ZINDEX = 2000; // zIndex
-    var PILES = game.piles;
-    var MOVES = game.moves;
 
-    var moveAllowed = function() {
-        return true;
-    };
-
-    if (game.moveAllowed) {
-        moveAllowed = game.moveAllowed;
-    } else {
-        moveAllowed = function(from, to, cardName) { // , cardIndex
-            // disallow move on same pile
-            if (from === to) {
-                return false;
-            }
-
-            var fromPile = getPile(from);
-            var toPile = getPile(to);
-
-            // if source pile does not contain the card, the move is disallowed
-            if (fromPile.cards.indexOf(cardName) < 0) {
-                return false;
-            }
-
-            // now check the rules on the target pile
-            return toPile.incoming && toPile.incoming(from, cardName);
-        };
-    }
+    $.extend({
+        cardUrl: function() { // card
+            return '';
+        }
+    }, game);
 
     $('.game-name').text(game.name);
 
+    /************************************************+
+     *
+     * Everything we need for basic dom and object manipulation
+     *
+     *************************************************/
+
     var render = function () {
+        var piles = [];
+        for (var i in game.piles) {
+            if (game.piles.hasOwnProperty(i)) {
+                piles.push(game.piles[i]);
+            }
+        }
         var pilesSelection = d3.select('#container')
             .selectAll('div.pile')
-            .data(PILES, function (datum) {
+            .data(piles, function (datum) {
                 return datum.id;
             });
 
@@ -92,7 +83,7 @@
             .data(function (datum) {
                 return datum.cards;
             }, function (datum) {
-                return datum;
+                return datum.id;
             });
 
         cardsSelection
@@ -100,10 +91,12 @@
             .append('div')
             .attr('class', 'card')
             .attr('id', function (datum) {
-                return 'card-' + datum;
+                return 'card-' + datum.id;
             })
             .html(function (datum) {
-                return '<iframe frameborder="0" src="assets/decks/uno/cards.svg#' + datum + '"></iframe>';
+                return '<iframe frameborder="0" src="' +
+                    game.cardUrl(datum) +
+                    '"></iframe>';
             });
 
         cardsSelection
@@ -119,40 +112,6 @@
         });
     };
 
-    var move = function(from, to, cardName, cardIndex) {
-
-        for (var i = 0; i < PILES.length; i++) {
-            if (PILES[i].id === to) {
-                PILES[i].cards.push(cardName);
-            }
-            if (PILES[i].id === from) {
-                PILES[i].cards.splice(cardIndex, 1);
-            }
-        }
-    };
-
-    var moves = function(moves) {
-        for (var i = 0; i < moves.length; i++) {
-            var from = moves[i][0];
-            var to = moves[i][1];
-            var name = 0;
-            if (moves[i].length > 1) {
-                name = moves[i][2];
-            }
-            var index = 0;
-            if (moves[i].length > 2) {
-                index = moves[i][3];
-            }
-
-            var fp = getPile(from);
-
-            index = fp.cards.length - 1;
-            name = fp.cards[index];
-
-            move(from, to, name, index);
-        }
-    };
-
     var unfold = function ($pile, animationDuration, method) {
 
         if (undefined === animationDuration) {
@@ -162,7 +121,7 @@
             method = DEFAULT_UNFOLD_ANIMATION;
         }
 
-        var pile = getPile($pile.attr('id'));
+        var pile = game.piles[$pile.attr('id')];
 
         if (false === pile.unfoldAble) {
             return;
@@ -214,7 +173,7 @@
             method = DEFAULT_UNFOLD_ANIMATION;
         }
 
-        var pile = getPile($pile.attr('id'));
+        var pile = game.piles[$pile.attr('id')];
         if (pile && pile.unfoldAnimation) {
             method = pile.unfoldAnimation;
         }
@@ -251,25 +210,51 @@
         }, ANIMATION_DURATION);
     };
 
-    var getPile = function(id) {
-        for (var i = 0; i < PILES.length; i++) {
-            if (PILES[i].id === id) {
-                return PILES[i];
+
+    var debug = function() {
+        var msg = 'piles: ';
+        for (var i in game.piles) {
+            if (game.piles.hasOwnProperty(i)) {
+                msg += '\n' + i + ' : ' + game.piles[i].cards.length;
             }
         }
-        return null;
+        // console.debug(msg);
     };
 
-    moves(MOVES);
+    /************************************************+
+     *
+     * start and render the game
+     *
+     *************************************************/
+
+
+    // start game.
+    // execute initial moves
+    while(game.moves.length > 0) {
+        var move = game.moves.pop();
+        if (cgEngine.rules.checkMove(move)) {
+            move.execute();
+        }
+    }
+
+    debug();
+
+    // render game
     render();
 
+    /************************************************+
+     *
+     * Everything we need for saving / editing
+     *
+     *************************************************/
+
     $('#save').off().on('click', function() {
-        var content = 'PILES = [';
+        var content = 'game.piles = [';
         var $piles = $('.pile');
         $piles.each(function(index, pile) {
             var $pile = $(pile);
             var offset = $pile.offset();
-            var pileObject = getPile($pile.attr('id'));
+            var pileObject = game.piles[$pile.attr('id')];
             pileObject.top = offset.top + 'px';
             pileObject.left = offset.left + 'px';
 
@@ -291,6 +276,13 @@
         var uriContent = 'data:application/octet-stream,' + encodeURIComponent(content);
         window.open(uriContent, 'game.json');
     });
+
+
+    /************************************************+
+     *
+     * Everything we need for drag+drop, transform or any other ui
+     *
+     *************************************************/
 
     var currentDragTarget = null;
     var $currentDragElement = null;
@@ -317,6 +309,39 @@
         }
 
         return el;
+    };
+
+    var cleanDragendCss = function() {
+        if (null === currentDragTarget) {
+            return;
+        }
+
+        if (null === $currentDragElement) {
+            var el = getCurrentDragTarget(event);
+            $currentDragElement = $(el);
+        }
+
+        var css = {};
+        switch (currentDragTarget) {
+        case 'pile':
+            css = {
+                zIndex: $currentDragElement.data('oZIndex'),
+                boxShadow: 'none'
+            };
+            break;
+        case 'card':
+            css = {
+                zIndex: $currentDragElement.data('oZIndex'),
+                display: 'block',
+                top: 0,
+                left: 0
+            };
+            break;
+        }
+        $currentDragElement.css(css);
+
+        currentDragTarget = null;
+        $currentDragElement = null;
     };
 
     var $body = $('body');
@@ -398,48 +423,42 @@
             return;
         }
 
-        var css = {};
         switch (currentDragTarget) {
         case 'pile':
-            css = {
-                zIndex: $currentDragElement.data('oZIndex'),
-                boxShadow: 'none'
-            };
             break;
         case 'card':
             $currentDragElement.hide();
 
             var dropPile = document.elementFromPoint(
-                event.gesture.center.pageX,
-                event.gesture.center.pageY
+                event.gesture.center.pageX - window.scrollX,
+                event.gesture.center.pageY - window.scrollY
             );
 
             dropPile = findTargetByClassName(dropPile, 'pile');
 
             var sourcePile = findTargetByClassName($currentDragElement[0], 'pile');
 
-            css = {
-                zIndex: $currentDragElement.data('oZIndex'),
-                display: 'block',
-                top: 0,
-                left: 0
-            };
-
             if (dropPile &&
                 dropPile.parentNode &&
                 sourcePile !== dropPile &&
                 dropPile.className.search('pile') >= 0
             ) {
-                var index = $currentDragElement.index();
-                var name = $currentDragElement.attr('id').substr('card-'.length);
+                //var index = $currentDragElement.index();
+                var cardId = $currentDragElement.attr('id').substr('card-'.length);
                 var sd = $(sourcePile).attr('id');
                 var td = $(dropPile).attr('id');
 
-                if (moveAllowed(sd, td, name, index)) {
+                var move = new cgEngine.Move(game.piles[sd], game.piles[td], {
+                    drawStrategy: 'byId',
+                    drawCardId: cardId
+                });
+
+                if (cgEngine.rules.checkMove(move)) {
                     currentDragTarget = null;
                     $currentDragElement = null;
-                    move(sd, td, name, index);
 
+                    move.execute();
+                    debug();
                     render();
 
                     // do not manipulate current element, stop execution
@@ -459,10 +478,8 @@
             }
             break;
         }
-        $currentDragElement.css(css);
 
-        currentDragTarget = null;
-        $currentDragElement = null;
+        cleanDragendCss();
     }).on('tap', function(event) {
         var $pile = $(findTargetByClassName(event, 'pile'));
 
@@ -502,12 +519,7 @@
             top: event.gesture.center.pageY - h
         });
     })
-    /*
-    .on('mouseup', function() {
-        currentDragTarget = null;
-        $currentDragElement = null;
-    })
-    */
+    .on('mouseup, release', cleanDragendCss)
     ;
 
 })(jQuery, new Uno());
