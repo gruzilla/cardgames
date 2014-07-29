@@ -8,7 +8,7 @@ var cgEngine;
         var result = null;
         $.ajax({
             type: 'GET',
-            url: 'assets/decks/' + gameName + '/cards.json',
+            url: 'assets/games/' + gameName + '/cards.json',
             dataType: 'json',
             success: function(data) {
                 result = data;
@@ -24,7 +24,7 @@ var cgEngine;
         var result = null;
         $.ajax({
             type: 'GET',
-            url: 'assets/decks/' + gameName + '/piles.json',
+            url: 'assets/games/' + gameName + '/piles.json',
             dataType: 'json',
             success: function(data) {
                 result = data;

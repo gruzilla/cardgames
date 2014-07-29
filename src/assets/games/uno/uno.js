@@ -24,8 +24,9 @@ function Uno() {
 
         // global function hooks
         // moveAllowed: function(move) {}
-        cardUrl: function(card) {
-            return 'assets/decks/uno/cards.svg#' + card.suit + (null === card.rank ? '' : card.rank);
-        }
+        cardUrl: function(card) { // , pile // additional non needed parameter
+            return 'assets/games/uno/cards.svg#' + card.suit + (null === card.rank ? '' : card.rank);
+        },
+        backUrl: 'assets/games/uno/cards.svg#back'
     };
 }

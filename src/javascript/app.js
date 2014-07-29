@@ -12,15 +12,27 @@
         scaleThreshold: 0,
         dragMinDistance: 0,
         showTouches: true,
-        holdTimeout: 150
+        holdTimeout: 350
     };
 
     var ANIMATION_DURATION = 300; // milli seconds
     var CARD_DRAG_ZINDEX = 2000; // zIndex
 
-    $.extend({
+    game = $.extend({
+        backUrl: '',
         cardUrl: function() { // card
             return '';
+        },
+        onFold: function($card, $pile) {
+            if ('back' === this.piles[$pile.attr('id')].showSide) {
+                $card.find('iframe').attr('src', this.backUrl);
+            }
+        },
+        onUnFold: function($card, $pile) {
+            if ('back' === this.piles[$pile.attr('id')].showSide) {
+                var $iFrame = $card.find('iframe');
+                $iFrame.attr('src', $iFrame.data('frontUrl'));
+            }
         }
     }, game);
 
@@ -93,10 +105,17 @@
             .attr('id', function (datum) {
                 return 'card-' + datum.id;
             })
-            .html(function (datum) {
-                return '<iframe frameborder="0" src="' +
-                    game.cardUrl(datum) +
-                    '"></iframe>';
+            .html(function (datum, cardIndex, pileIndex) {
+                var url = game.cardUrl(datum, piles[pileIndex]);
+                if ('front' === piles[pileIndex].showSide) {
+                    return '<iframe frameborder="0" src="' +
+                        url +
+                        '" data-front-url="' + url + '"></iframe>';
+                } else {
+                    return '<iframe frameborder="0" src="' +
+                        game.backUrl +
+                        '" data-front-url="' + url + '"></iframe>';
+                }
             });
 
         cardsSelection
@@ -156,11 +175,15 @@
                 break;
             }
 
+            var complete = function() {
+                game.onUnFold($(this), $pile);
+            };
+
             $card
                 .css({
                     zIndex: index
                 })
-                .transition(transition, animationDuration)
+                .transition(transition, animationDuration, complete)
                 .data({
                     foldFlag: true,
                     oZIndex: index
@@ -195,12 +218,19 @@
                 break;
             }
 
+            var complete = function() {
+                game.onFold($(this), $pile);
+            };
+
             $card.transition(
                 transition,
-                ANIMATION_DURATION
-            ).css({
+                ANIMATION_DURATION,
+                complete
+            )
+            .css({
                 zIndex: index
-            }).data({
+            })
+            .data({
                 foldFlag: false
             });
         });

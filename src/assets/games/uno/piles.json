@@ -3,6 +3,7 @@
         "id": "deck",
         "name": "Stapel",
         "unfoldAble": false,
+        "showSide": "back",
         "top": "40%",
         "left": "31%"
     },
@@ -11,6 +12,7 @@
         "name": "Spielfeld",
         "top": "40%",
         "left": "48%",
+        "showSide": "front",
         "incoming": [
             "move.target.cards.length === 0 || move.card(0).suit === 'wild' || move.target.card('top').suit === 'wild' || move.target.card('top').suit === move.card(0).suit || move.target.card('top').rank === move.card(0).rank"
         ]
@@ -19,6 +21,7 @@
         "id": "player1",
         "name": "Spieler 1",
         "unfoldAnimation": "rotate",
+        "showSide": "back",
         "top": "8%",
         "left": "40%",
         "rotate": "180deg",
@@ -31,6 +34,7 @@
         "id": "player2",
         "name": "Spieler 2",
         "unfoldAnimation": "rotate",
+        "showSide": "back",
         "top": "75%",
         "left": "40%",
         "sort": true,
