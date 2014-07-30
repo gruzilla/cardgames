@@ -479,6 +479,23 @@ var cgEngine;
                 return 0;
             };
 
+            var itemsPerRow = Math.min(8, Math.ceil($cards.length / 2));
+            var rowHeight = $pile.height() * 0.75;
+            var topStart = - $pile.height() / 2;
+            var leftStart = - $pile.width() / 2 * itemsPerRow / 2;
+            var colWidth = $pile.width() / 2;
+            var layout = function($card, index, axis) {
+                if ('x' === axis) {
+                    return leftStart + index % itemsPerRow * colWidth;
+                }
+
+                if ('y' === axis) {
+                    return topStart + Math.floor(index / itemsPerRow) * rowHeight;
+                }
+
+                return 0;
+            };
+
             $cards.each(function(index, card) {
                 var $card = $(card);
                 var transition = {};
@@ -488,6 +505,11 @@ var cgEngine;
                 case 'extrude':
                     transition = {
                         translate: [UNFOLD_DISTANCE * index, 0]
+                    };
+                    break;
+                case 'layOut':
+                    transition = {
+                        translate: [layout($card, index, 'x'), layout($card, index, 'y')]
                     };
                     break;
                 case 'circle':
@@ -536,6 +558,7 @@ var cgEngine;
 
                 switch (method) {
                 case 'extrude':
+                case 'layOut':
                 case 'circle':
                     transition = {
                         translate: [0, 0]
@@ -645,7 +668,13 @@ var cgEngine;
                 $('.pile').toggleClass('edit');
             }
         });
-        $('#modal .close').off().on('click', function() {
+        $('#modal').off().on('click', function(event) {
+            if ($('#modal').get(0) !== event.target) {
+                return;
+            }
+
+            $(this).hide();
+        }).find('.close').off().on('click', function() {
             $('#modal').hide();
         });
 
