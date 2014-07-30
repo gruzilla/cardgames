@@ -542,11 +542,16 @@
         var h = $el.height()/2;
         $el.css({
             rotate: event.gesture.rotation,
-//                transformOrigin: w + 'px ' + h + 'px',
             width: oldScale.width * event.gesture.scale,
             height: oldScale.height * event.gesture.scale,
             left: event.gesture.center.pageX - w,
             top: event.gesture.center.pageY - h
+        });
+        $el.find('.card').each(function() {
+            var $card = $(this);
+            $card.css({
+                transformOrigin: '0 ' + $card.height() + 'px'
+            });
         });
     })
     .on('mouseup, release', cleanDragendCss)
