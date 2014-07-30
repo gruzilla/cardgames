@@ -33,7 +33,7 @@
     {
         "id": "player2",
         "name": "Spieler 2",
-        "unfoldAnimation": "rotate",
+        "unfoldAnimation": "circle",
         "showSide": "back",
         "top": "75%",
         "left": "40%",

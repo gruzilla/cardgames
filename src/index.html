@@ -48,16 +48,36 @@
     <link rel="shortcut icon" href="assets/images/favicons/favicon.ico">
     <link rel="icon" type="image/png" sizes="64x64"
           href="assets/images/favicons/favicon.png">
+    <!--
+    <script src="http://128.130.182.88:8080/target/target-script-min.js#ipad"></script>
+    -->
 </head>
 
 <body>
 
 <h1 class="game-name"></h1>
 
-<div id="container">
+<div id="game-container">
 </div>
 
 <button id="save">save</button>
+<button id="editPile">edit pile</button>
+<div id="modal" class="modal"><div class="modal-wrapper"><div class="close">x</div><div class="container"></div></div></div>
+<div id="pile-form">
+    <form>
+        <dl>
+            <dd><label for="pile-name">Name</label></dd>
+            <dt><input id="pile-name" name="name" /></dt>
+
+            <dd><label for="pile-name">Incoming rule</label></dd>
+            <dt><textarea id="pile-incoming" name="incoming"></textarea></dt>
+
+            <dd><label for="pile-name">Outgoing rule</label></dd>
+            <dt><textarea id="pile-outgoing" name="outgoing"></textarea></dt>
+        </dl>
+        <button class="save-pile">save</button>
+    </form>
+</div>
 
 <!--
 <script src="http://128.131.223.205:8080/target/target-script-min.js#ipad"></script>
@@ -82,13 +102,15 @@
 </script>
 -->
 
+<script src="assets/games/uno/uno.js"></script>
+
 <!-- fileblock:js customScripts -->
 <script src="javascript/engine/engine.js"></script>
 <script src="javascript/modules/shuffle.js"></script>
-<script src="assets/games/uno/uno.js"></script>
 <script src="javascript/app.js"></script>
 <!-- endfileblock -->
 <!-- endbuild -->
+
 
 <!--<div id="blub" style="background-color: red; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-radius: 5px; margin-left: -5px; margin-top: -5px;"></div>-->
 

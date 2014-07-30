@@ -31,26 +31,38 @@
   content: "\e002";
 }
 
+/*Animation Prefs*/
+@-webkit-keyframes pulse {
+  /* line 12, modules/_pile.scss */
+  0% {
+    background-color: #cfcfcf;
+  }
+
+  /* line 13, modules/_pile.scss */
+  100% {
+    background-color: #efefef;
+  }
+}
 /* card size is defined by .card-container */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000311}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000318}}
 .card {
   width: 100%;
   height: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000315}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000322}}
 .card iframe {
   pointer-events: none;
   width: 100%;
   height: 100%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000322}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000329}}
 .pile {
   position: absolute;
   cursor: move;
   width: 120px;
   height: 160px;
-  background-color: #EFEFEF;
+  background-color: #efefef;
   -moz-border-radius: 15%;
   -webkit-border-radius: 15%;
   border-radius: 15%;
@@ -58,7 +70,7 @@
   border-style: solid;
   border-color: #d5d5d5;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000334}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000341}}
 .pile > .name-container {
   width: 100%;
   position: absolute;
@@ -70,7 +82,7 @@
   -webkit-user-select: none;
   user-select: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000343}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000350}}
 .pile > .card-container {
   cursor: pointer;
   width: 70%;
@@ -79,24 +91,77 @@
   top: 15%;
   left: 15%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000358}}
 .pile > .card-container > .card {
   position: absolute;
   left: 0;
   top: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000365}}
 .pile .card {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000362}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000369}}
 .pile .card:nth-last-child(2),
 .pile .card:last-child {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000375}}
 .pile.unfolded .card {
   display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000380}}
+.pile.edit {
+  -webkit-animation: pulse 1s infinite alternate;
+  background-color: #cfcfcf;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\000033}}
+#modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9999999;
+  background-color: rgba(102, 102, 102, 0.5);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\0000313}}
+#modal h1, #modal h2, #modal h3, #modal h4, #modal h5, #modal h6 {
+  color: #333333;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\0000317}}
+#modal input,
+#modal textarea {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\0000322}}
+#modal textarea {
+  min-height: 70px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\0000326}}
+#modal .modal-wrapper {
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  height: 150px;
+  width: 350px;
+  text-align: center;
+  background-color: white;
+  border: 3px solid #666666;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_modal\.scss}line{font-family:\0000338}}
+#modal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/lib\/gems\/1\.9\.1\/gems\/compass-core-1\.0\.0\.alpha\.19\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\000035}}

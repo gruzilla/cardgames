@@ -7,6 +7,13 @@ $deckWidth: 80px;
 $deckHeight: 120px;
 $deckBorder: 20px;
 
+/*Animation Prefs*/
+@-webkit-keyframes pulse {
+  0% { background-color: $pile-edit-color; }
+  100% { background-color: $pile-background-color; }
+}
+
+
 /* card size is defined by .card-container */
 .card {
   width: 100%;
@@ -25,11 +32,11 @@ $deckBorder: 20px;
   width: $deckWidth + $deckBorder * 2;
   height: $deckHeight + $deckBorder * 2;
 
-  background-color: #EFEFEF;
+  background-color: $pile-background-color;
   @include border-radius(15%);
   border-width: 3px;
   border-style: solid;
-  border-color: darken(#EFEFEF, 10%);
+  border-color: darken($pile-background-color, 10%);
 
   & > .name-container {
     width: 100%;
@@ -68,5 +75,10 @@ $deckBorder: 20px;
     .card {
       display: block;
     }
+  }
+
+  &.edit {
+    -webkit-animation: pulse 1s infinite alternate;
+    background-color: $pile-edit-color;
   }
 }
