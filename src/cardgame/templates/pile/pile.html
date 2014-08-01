@@ -1,0 +1,13 @@
+<div
+        class="pile"
+        id="{{ id }}"
+        style="top:{{ top }}; left:{{ left }}; transform:rotate({{ rotate }})"
+        on-tap="unfold:{{ id }}"
+>
+    <div class="card-container">
+        {{#each cards}}
+            <div class="card" id="card-{{ id }}"><iframe frameborder="0" src="{{ cardUrl(this) }}"></iframe></div>
+        {{/each}}
+    </div>
+    <div class="name-container">{{ name }}</div>
+</div>

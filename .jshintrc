@@ -17,13 +17,11 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "jquery": true,
-    "globals": {
-        "jsPlumb": false,
-        "d3": false,
-        "_": false,
 
+    "globals": {
         "assert": false,
+
+        "define": false,
 
         "beforeEach": false,
         "afterEach": false,

@@ -1,5 +1,5 @@
-[
-    {
+{
+    "deck": {
         "id": "deck",
         "name": "Stapel",
         "unfoldAble": false,
@@ -7,7 +7,7 @@
         "top": "40%",
         "left": "31%"
     },
-    {
+    "center": {
         "id": "center",
         "name": "Spielfeld",
         "top": "40%",
@@ -17,7 +17,7 @@
             "move.cards.length === 1 && (move.target.cards.length === 0 || move.card(0).suit === 'wild' || move.target.card('top').suit === 'wild' || move.target.card('top').suit === move.card(0).suit || move.target.card('top').rank === move.card(0).rank)"
         ]
     },
-    {
+    "player1": {
         "id": "player1",
         "name": "Spieler 1",
         "unfoldAnimation": "rotate",
@@ -30,7 +30,7 @@
             "'deck' === move.source.id"
         ]
     },
-    {
+    "player2": {
         "id": "player2",
         "name": "Spieler 2",
         "unfoldAnimation": "circle",
@@ -42,4 +42,4 @@
             "'deck' === move.source.id"
         ]
     }
-]
+}
