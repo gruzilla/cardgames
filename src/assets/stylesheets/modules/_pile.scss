@@ -1,5 +1,6 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/user-interface";
+@import "compass/css3/transform";
 
 $cardWidth: 70%;
 $cardHeight: 70%;
@@ -21,8 +22,29 @@ $deckBorder: 20px;
 
   iframe {
     pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include transform-origin(0, 100%);
+
     width: 100%;
     height: 100%;
+  }
+
+  iframe:nth-child(2) {
+    @include rotate(-25deg);
+  }
+  iframe:nth-child(3) {
+    @include rotate(-50deg);
+  }
+  iframe:nth-child(4) {
+    @include rotate(-75deg);
+  }
+  iframe:nth-child(5) {
+    @include rotate(-100deg);
+  }
+  iframe:nth-child(6) {
+    @include rotate(-125deg);
   }
 }
 
@@ -60,6 +82,10 @@ $deckBorder: 20px;
       left: 0;
       top: 0;
     }
+  }
+
+  &.card-hover {
+    background-color: $pile-edit-color;
   }
 
   .card {

@@ -25,7 +25,7 @@ function Uno() {
         // global function hooks
         // moveAllowed: function(move) {}
         cardUrl: function(card) { // , pile // additional non needed parameter
-            return 'assets/games/uno/cards.svg#' + card.suit + (null === card.rank ? '' : card.rank);
+            return 'assets/games/uno/cards.svg#' + card.url;
         },
         backUrl: 'assets/games/uno/cards.svg#back'
     };

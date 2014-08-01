@@ -33,30 +33,72 @@
 
 /*Animation Prefs*/
 @-webkit-keyframes pulse {
-  /* line 12, modules/_pile.scss */
+  /* line 13, modules/_pile.scss */
   0% {
     background-color: #cfcfcf;
   }
 
-  /* line 13, modules/_pile.scss */
+  /* line 14, modules/_pile.scss */
   100% {
     background-color: #efefef;
   }
 }
 /* card size is defined by .card-container */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000318}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000319}}
 .card {
   width: 100%;
   height: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000322}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000323}}
 .card iframe {
   pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -moz-transform-origin: 0 100%;
+  -ms-transform-origin: 0 100%;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
   width: 100%;
   height: 100%;
 }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000334}}
+.card iframe:nth-child(2) {
+  -moz-transform: rotate(-25deg);
+  -ms-transform: rotate(-25deg);
+  -webkit-transform: rotate(-25deg);
+  transform: rotate(-25deg);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000337}}
+.card iframe:nth-child(3) {
+  -moz-transform: rotate(-50deg);
+  -ms-transform: rotate(-50deg);
+  -webkit-transform: rotate(-50deg);
+  transform: rotate(-50deg);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000340}}
+.card iframe:nth-child(4) {
+  -moz-transform: rotate(-75deg);
+  -ms-transform: rotate(-75deg);
+  -webkit-transform: rotate(-75deg);
+  transform: rotate(-75deg);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000343}}
+.card iframe:nth-child(5) {
+  -moz-transform: rotate(-100deg);
+  -ms-transform: rotate(-100deg);
+  -webkit-transform: rotate(-100deg);
+  transform: rotate(-100deg);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000346}}
+.card iframe:nth-child(6) {
+  -moz-transform: rotate(-125deg);
+  -ms-transform: rotate(-125deg);
+  -webkit-transform: rotate(-125deg);
+  transform: rotate(-125deg);
+}
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000351}}
 .pile {
   position: absolute;
   cursor: move;
@@ -70,7 +112,7 @@
   border-style: solid;
   border-color: #d5d5d5;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000341}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000363}}
 .pile > .name-container {
   width: 100%;
   position: absolute;
@@ -82,7 +124,7 @@
   -webkit-user-select: none;
   user-select: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000350}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000372}}
 .pile > .card-container {
   cursor: pointer;
   width: 70%;
@@ -91,26 +133,30 @@
   top: 15%;
   left: 15%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000380}}
 .pile > .card-container > .card {
   position: absolute;
   left: 0;
   top: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000387}}
+.pile.card-hover {
+  background-color: #cfcfcf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000391}}
 .pile .card {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000369}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000395}}
 .pile .card:nth-last-child(2),
 .pile .card:last-child {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000375}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\00003101}}
 .pile.unfolded .card {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\0000380}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/ma\/Documents\/studium\/master\/gamelibrary3\/src\/assets\/stylesheets\/modules\/_pile\.scss}line{font-family:\00003106}}
 .pile.edit {
   -webkit-animation: pulse 1s infinite alternate;
   background-color: #cfcfcf;

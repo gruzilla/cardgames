@@ -14,7 +14,7 @@
         "left": "48%",
         "showSide": "front",
         "incoming": [
-            "move.target.cards.length === 0 || move.card(0).suit === 'wild' || move.target.card('top').suit === 'wild' || move.target.card('top').suit === move.card(0).suit || move.target.card('top').rank === move.card(0).rank"
+            "move.cards.length === 1 && (move.target.cards.length === 0 || move.card(0).suit === 'wild' || move.target.card('top').suit === 'wild' || move.target.card('top').suit === move.card(0).suit || move.target.card('top').rank === move.card(0).rank)"
         ]
     },
     {

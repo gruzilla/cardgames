@@ -141,13 +141,13 @@ var cgEngine;
             }
         }
     };
-    var _card = function(cards, strategy) {
+    var _card = function(cards, strategy, options) {
         if (cards.hasOwnProperty(strategy)) {
             return cards[strategy];
         }
 
         if (_drawStrategies.hasOwnProperty(strategy)) {
-            var drawn = _drawStrategies[strategy](cards);
+            var drawn = _drawStrategies[strategy](cards, options);
             if (drawn.length > 0) {
                 return drawn[0];
             }
@@ -179,8 +179,8 @@ var cgEngine;
                     _layStrategies[strategy](this, card);
                 }
             },
-            card: function (strategy) {
-                return _card(this.cards, strategy);
+            card: function (strategy, options) {
+                return _card(this.cards, strategy, options);
             }
         };
 
@@ -193,17 +193,15 @@ var cgEngine;
     var _draw = function(move, cardsOrStrategy) {
         if ('string' === typeof cardsOrStrategy && _drawStrategies[cardsOrStrategy]) {
             move.cards = _drawStrategies[cardsOrStrategy](move.source.cards, move.options);
-            move.state = 2;
         } else if ('object' === typeof cardsOrStrategy) {
             move.cards = cardsOrStrategy;
-            move.state = 2;
         }
     };
 
     var _execute = function(move) {
-        if (move.state < 2) {
+        if (move.state < 3) {
             move.draw();
-            if (move.state < 2) {
+            if (move.state < 3) {
                 return false;
             }
         }
@@ -219,9 +217,10 @@ var cgEngine;
 
     /**
      * a move can have different stati:
-     * 0: uninitialized
-     * 1: initialized: source and target are clear, which cards will be moved is unclear
-     * 2: full: source, target and cards are defined
+     * 0: uninitialized (or target, but no source)
+     * 1: move has a defined source
+     * 2: move has a defined source + target
+     * 3: move has a defined source + target and contains cards
      *
      * @param source
      * @param target
@@ -233,7 +232,7 @@ var cgEngine;
 
         var layStrategy = 'onTop';
         var drawStrategy = options.hasOwnProperty('drawStrategy') ? options.drawStrategy : 'top';
-        var state = 'object' === typeof source && 'object' === typeof target ? 1 : 0;
+        var state = 'object' === typeof source ? ('object' === typeof target ? 2 : 1) : 0;
         var cards = [];
 
         return {
@@ -245,6 +244,22 @@ var cgEngine;
             state: state,
             cards: cards,
 
+            setSource: function(source) {
+                this.source = source;
+                this.checkState();
+            },
+            setTarget: function(target) {
+                this.target = target;
+                this.checkState();
+            },
+            clearTarget: function() {
+                this.target = null;
+                this.checkState();
+            },
+            addCard: function(card) {
+                this.cards.push(card);
+                this.checkState();
+            },
             execute: function() {
                 return _execute(this);
             },
@@ -256,6 +271,19 @@ var cgEngine;
                     cardsOrStrategy = this.drawStrategy;
                 }
                 _draw(this, cardsOrStrategy);
+                this.checkState();
+            },
+            checkState: function() {
+                this.state = 0;
+                if ('object' === typeof this.source) {
+                    this.state = 1;
+                }
+                if (1 === this.state && 'object' === typeof this.target) {
+                    this.state = 2;
+                }
+                if (2 === this.state && this.cards && this.cards.length) {
+                    this.state = 3;
+                }
             }
         };
     };
@@ -394,6 +422,22 @@ var cgEngine;
                 if ($pile.data('foldFlag')) {
                     unfold($pile, 0); // animationDuration
                 }
+            });
+
+            populatePileData();
+        };
+
+        var populatePileData = function() {
+            currentPileData = [];
+            $('.pile').each(function(index, pile) {
+                currentPileData.push(
+                    {
+                        rect: pile.getBoundingClientRect(),
+                        el: $(pile),
+                        data: game.piles[pile.id]
+                    }
+                );
+                pile.classList.remove('card-hover');
             });
         };
 
@@ -622,6 +666,7 @@ var cgEngine;
 
         debug();
 
+        var currentPileData = null;
         // render game
         render();
 
@@ -632,7 +677,7 @@ var cgEngine;
          *************************************************/
 
         $('#save').off().on('click', function() {
-            var content = 'game.piles = [';
+            var content = '[';
             var $piles = $('.pile');
             $piles.each(function(index, pile) {
                 var $pile = $(pile);
@@ -641,12 +686,8 @@ var cgEngine;
                 pileObject.top = offset.top + 'px';
                 pileObject.left = offset.left + 'px';
 
-                var cards = [];
-                $pile.find('.card').each(function(index, card) {
-                    cards.push($(card).attr('id').split('card-')[1]);
-                });
-
-                pileObject.cards = cards;
+                // do not save cards
+                delete pileObject.cards;
 
                 content += JSON.stringify(pileObject);
                 if (index !== $piles.length - 1) {
@@ -657,7 +698,7 @@ var cgEngine;
             content += '];';
 
             var uriContent = 'data:application/octet-stream,' + encodeURIComponent(content);
-            window.open(uriContent, 'game.json');
+            window.open(uriContent, 'piles.json');
         });
 
         $('#editPile').off().on('click', function() {
@@ -712,7 +753,11 @@ var cgEngine;
             return el;
         };
 
-        var cleanDragendCss = function() {
+        var cleanDragendCss = function(event) {
+            if ($currentDragElement) {
+                $('.pile').removeClass('card-hover');
+                $currentDragElement.find('iframe:not(:first)').remove();
+            }
             if (null === currentDragTarget) {
                 return;
             }
@@ -735,6 +780,38 @@ var cgEngine;
                 };
                 break;
             case 'card':
+                if (event) {
+                    var $card = $(findTargetByClassName(event, 'card'));
+                    var $pile = $(findTargetByClassName(event, 'pile'));
+                    if ($card.length > 0 && $pile.length > 0) {
+                        // is the user trying to select another card?
+                        var cardId = $card.attr('id').substr('card-'.length);
+                        var oCardId = $currentDragElement.attr('id').substr('card-'.length);
+                        if (cardId !== oCardId) {
+                            var $iFrame = $card.find('iframe');
+
+                            $currentDragElement.append($iFrame);
+                            $card.remove();
+
+                            if (null !== currentMove) {
+                                //console.debug('adding card to move');
+                                //console.debug(game.piles[$pile[0].id]);
+                                currentMove.addCard(
+                                    game.piles[$pile[0].id].card(
+                                        'byId',
+                                        {drawCardId: cardId}
+                                    )
+                                );
+                            }
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            return;
+                        }
+                    }
+                }
+
                 css = {
                     zIndex: $currentDragElement.data('oZIndex'),
                     display: 'block',
@@ -791,9 +868,12 @@ var cgEngine;
 
                 oPile.incoming = form.incoming.value.split('\n').filter(function(item) {return '' !== item.trim(); });
                 oPile.outgoing = form.outgoing.value.split('\n').filter(function(item) {return '' !== item.trim(); });
+
+                // SYNC needed if multiplayer
             });
         };
 
+        var currentMove = null;
         var $gameContainer = $('#game-container');
         $gameContainer.hammer(HAMMER_OPTIONS).on('dragstart', function(event) {
 
@@ -834,6 +914,12 @@ var cgEngine;
                 }
 
                 $currentDragElement.data('pileTransform', values);
+
+                currentMove = new cgEngine.Move(game.piles[pile.id], null, {
+                    drawStrategy: 'byId',
+                    drawCardId: $currentDragElement.attr('id').substr('card-'.length)
+                });
+                currentMove.draw();
             }
         }).on('drag', function(event) {
             if (null === $currentDragElement) {
@@ -853,6 +939,28 @@ var cgEngine;
                 break;
             case 'card':
                 var dT = $currentDragElement.data('pileTransform');
+
+                if (currentPileData && currentPileData.length) {
+                    var cX = event.gesture.center.pageX - window.scrollX;
+                    var cY = event.gesture.center.pageY - window.scrollY;
+
+                    for (var cp = 0; cp < currentPileData.length; cp++) {
+                        if (
+                            currentPileData[cp].rect.left <= cX &&
+                            currentPileData[cp].rect.right >= cX &&
+                            currentPileData[cp].rect.top <= cY &&
+                            currentPileData[cp].rect.bottom >= cY
+                        ) {
+                            if (!currentPileData[cp].el[0].classList.contains('card-hover')) {
+                                currentPileData[cp].el[0].classList.add('card-hover');
+                            }
+                        } else {
+                            if (currentPileData[cp].el[0].classList.contains('card-hover')) {
+                                currentPileData[cp].el[0].classList.remove('card-hover');
+                            }
+                        }
+                    }
+                }
 
                 var dX = event.gesture.deltaX;
                 var dY = event.gesture.deltaY;
@@ -881,11 +989,15 @@ var cgEngine;
             });
         }).on('dragend', function(event) {
             if (null === $currentDragElement) {
+                currentMove = null;
                 return;
             }
 
             switch (currentDragTarget) {
             case 'pile':
+                populatePileData();
+                // SYNC needed if multiplayer
+                // save pile positions
                 break;
             case 'card':
                 $currentDragElement.hide();
@@ -894,43 +1006,37 @@ var cgEngine;
                     event.gesture.center.pageX - window.scrollX,
                     event.gesture.center.pageY - window.scrollY
                 );
+                $currentDragElement.show();
 
                 dropPile = findTargetByClassName(dropPile, 'pile');
                 if (!dropPile) {
-                    return;
-                }
-
-                var sourcePile = findTargetByClassName($currentDragElement[0], 'pile');
-                if (!sourcePile) {
+                    currentMove = null;
+                    cleanDragendCss();
                     return;
                 }
 
                 if (dropPile.parentNode &&
-                    sourcePile !== dropPile &&
-                    dropPile.className.search('pile') >= 0
-                    ) {
-                    //var index = $currentDragElement.index();
-                    var cardId = $currentDragElement.attr('id').substr('card-'.length);
-                    var sd = $(sourcePile).attr('id');
-                    var td = $(dropPile).attr('id');
+                    currentMove.state > 0 &&
+                    currentMove.source !== dropPile &&
+                    dropPile.classList.contains('pile') &&
+                    null !== currentMove
+                ) {
 
-                    var move = new cgEngine.Move(game.piles[sd], game.piles[td], {
-                        drawStrategy: 'byId',
-                        drawCardId: cardId
-                    });
+                    currentMove.setTarget(game.piles[dropPile.id]);
 
-                    if (cgEngine.rules.checkMove(move)) {
+                    if (currentMove.state >= 3 && cgEngine.rules.checkMove(currentMove)) {
+                        currentMove.execute();
+                        // SYNC needed if multiplayer
+                        $('.pile').removeClass('card-hover');
+                        $currentDragElement.find('iframe:not(:first)').remove();
+
+                        // we dont want cleanDragendCss to do anything
                         currentDragTarget = null;
                         $currentDragElement = null;
-
-                        move.execute();
-                        debug();
-                        render();
-
-                        // do not manipulate current element, stop execution
-                        return;
                     } else {
                         var $dP = $(dropPile);
+                        $('.pile').removeClass('card-hover');
+
                         var origColor = $dP.css('border-color');
                         var origBgColor = $dP.css('background-color');
                         $dP.css({
@@ -941,17 +1047,19 @@ var cgEngine;
                             backgroundColor: origBgColor
                         });
                     }
+
+                    render();
                 }
                 break;
             }
 
+            if (null !== $currentDragElement) {
+                $currentDragElement.find('iframe:not(:first)').remove();
+            }
+
+            currentMove = null;
             cleanDragendCss();
         }).on('tap', function(event) {
-            var $modal = $(findTargetByClassName(event, 'modal'));
-            if ($modal.length > 0) {
-                $modal.stop(true, true).hide();
-                return;
-            }
             var $pile = $(findTargetByClassName(event, 'pile'));
             if (0 === $pile.length) {
                 return;
@@ -971,6 +1079,10 @@ var cgEngine;
                 $pile.data('foldFlag', true);
             }
         }).on('transformstart', function (event) {
+            if (null !== currentDragTarget) {
+                return;
+            }
+
             var $el = $(findTargetByClassName(event, 'pile'));
             if (0 === $el.length) {
                 return;
@@ -981,6 +1093,10 @@ var cgEngine;
                 width: $el.width()
             });
         }).on('transform', function (event) {
+            if (null !== currentDragTarget) {
+                return;
+            }
+
             var $el = $(findTargetByClassName(event, 'pile'));
             if (0 === $el.length) {
                 return;
@@ -1005,7 +1121,8 @@ var cgEngine;
         })
             .on('mouseup, release', cleanDragendCss)
         ;
-
+        // SYNC needed if multiplayer
+        // add listener to transformend and sync pile-position/rotation/size
     };
 
     cgEngine = {
