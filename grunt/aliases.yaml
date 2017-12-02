@@ -18,11 +18,9 @@ handleCss:
 wiredependencies:
     - 'newer:favicons'
     - 'fileblocks:default'
-    - 'bowerInstall'
 
 wiretestdependencies:
     - 'fileblocks:test'
-    - 'bowerInstall:test'
 
 handleImages:
     - 'newer:imagemin'
@@ -33,6 +31,7 @@ build:
     - 'newer:copy:html'
     - 'newer:copy:images'
     - 'newer:copy:decks'
+    - 'newer:copy:games'
     - 'concurrent:build'
     - 'newer:copy:fonts'
     - 'useminPrepare'

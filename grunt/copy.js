@@ -37,5 +37,14 @@ module.exports = {
         src: [
             'assets/decks/**'
         ]
+    },
+    games: {
+        cwd: config.srcPath,
+        expand: true,
+        dest: config.distributionPath, // + '/assets/images',
+
+        src: [
+            'assets/games/**'
+        ]
     }
 };
